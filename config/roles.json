@@ -1,0 +1,34 @@
+{
+    "roles": [
+        {
+            "name": "admin",
+            "permissions": [
+                "signup",
+                "login",
+                "add_staff",
+                "view_staff",
+                "delete_staff",
+                "update_staff",
+                "view_records",
+                "update_records",
+                "add_records",
+                "delete_records",
+                "profile"
+            ]
+        },
+        {
+            "name": "manager",
+            "permissions": [
+                "login",
+                "add_records",
+                "view_records",
+                "delete_records",
+                "update_records"
+            ]
+        },
+        {
+            "name": "anonymous",
+            "permissions": []
+        }
+    ]
+}
