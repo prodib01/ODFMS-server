@@ -6,6 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm start
+RUN node index.js
 
 EXPOSE 3000
