@@ -78,7 +78,6 @@ const deleteCow = async (req, res) => {
     const cowId = req.params.cowId;
     const loggedInUser = req.user.userId;
 
-    console.log(`Attempting to delete cow with ID: ${cowId} by user: ${loggedInUser}`);
 
     try {
         const cow = await CowModel.getCowDetailsById(cowId);
@@ -89,8 +88,6 @@ const deleteCow = async (req, res) => {
                 message: 'Cow not found'
             });
         }
-
-        console.log(`Cow owner: ${cow.owner}, Logged in user: ${loggedInUser}`);
 
         if (cow.owner !== loggedInUser) {
             return res.status(401).json({

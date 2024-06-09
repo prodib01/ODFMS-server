@@ -5,7 +5,7 @@ const multer = require('multer');
 // Multer configuration
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, '../uploaded_files/') // Specify the destination directory for uploaded files
+    callback(null, './uploaded_files/') // Specify the destination directory for uploaded files
   },
   filename: function (req, file, cb) {
     //generate file name
@@ -40,10 +40,8 @@ const addFarm = async (req, res) => {
       const decoded = jwt.decode(token);
       const farm_owner = decoded.userId;
       // The folder where the files are saved
-      const loc = 'farm/images/';
-      const appHost = req.protocol + '://' + req.get('host');
       // Construct the file path with the desired format
-      const filePath = `${appHost}/${loc}${req.file.filename}`;
+      const filePath = `/uploaded_files/${req.file.filename}`;
       await farmModel.addFarm(farm_name, farm_owner, location, filePath);
       return res.status(201).json('Farm added successfully');
     });
@@ -60,7 +58,7 @@ const fs = require('fs');
 
 const serveImage = async (req, res) => {
   const filename = req.params.filename;
-  const filepath = path.join(__dirname, '../uploaded_files', filename);
+  const filepath = path.join(__dirname, './uploaded_files', filename);
 
   // Check file existence
   if (fs.existsSync(filepath)) {

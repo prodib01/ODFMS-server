@@ -13,7 +13,6 @@ const addproduct = async (name, code) => {
         const query = 'insert into "product" (product_name, product_code) values ($1, $2)';
         const values = [name, code];
         await pool.query(query, values);
-        console.log('Product added successfully');
     } catch (error) {
         console.error(error.message );
     }

@@ -34,7 +34,6 @@ const getHealthRecordsByCowId = async (req, res) => {
 const updateCowHealth = async (req, res) => {
   const { date, healthissue, treatmentgiven } = req.body;
   const cowId = req.params.cowId;
-  console.log('Updating cow health with:', { date, healthissue, treatmentgiven, cowId }); // Add this line for debugging
   try {
     await HealthModel.updateCowHealth(date, healthissue, treatmentgiven, cowId);
     res.status(200).json({ message: 'Health records updated successfully' });
@@ -45,7 +44,6 @@ const updateCowHealth = async (req, res) => {
 
 const createCowHealth = async (req, res) => {
     const {date, healthissue, treatmentgiven, cowId } = req.body;   
-    console.log('Creating cow health with:', { date, healthissue, treatmentgiven, cowId }); // Add this line for debugging
     try {
         await HealthModel.createCowHealth(date, healthissue, treatmentgiven, cowId);
         res.status(200).json({ 

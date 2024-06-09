@@ -8,20 +8,17 @@ const pool = new Pool({
   port: 5432
 });
 
-// Function to add farm details
 const addFarm = async (farm_name, farm_owner, location, logo) => {
   try {
     const query = 'INSERT INTO "farm" (farm_name, farm_owner, location, logo) VALUES ($1, $2, $3, $4)';
     const values = [farm_name, farm_owner, location, logo];
     await pool.query(query, values);
-    console.log('Farm added successfully');
   } catch (error) {
     console.error("Error adding farm:", error);
     throw error;
   }
 };
 
-//function getFarmDetailsByOwner
 const getFarmDetailsByOwner = async (farm_owner) => {
   try {
     const query = 'SELECT * FROM "farm" WHERE farm_owner = $1';

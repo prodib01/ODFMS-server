@@ -15,7 +15,6 @@ const addfeed = async (name, cost_per_unit, unit) => {
         const query = 'INSERT INTO Feeds (name, cost_per_unit, unit) VALUES ($1, $2, $3)';
         const values = [name, cost_per_unit, unit];
         await pool.query(query, values);
-        console.log('Feed added successfully');
     } catch (error) {
         console.error('Error adding feed:', error.message);
         throw error;
@@ -28,7 +27,6 @@ const addfeedinventory = async (feed_id, quantity) => {
         const query = 'insert into "feedinventory" (feed_id, quantity) values ($1, $2)';
         const values = [feed_id, quantity];
         await pool.query(query, values);
-        console.log('Feed inventory added successfully');
     } catch (error) {
         console.error('Error adding feed inventory', error.message );
         throw error;
@@ -40,7 +38,6 @@ const addfeedingschedules = async (cow, feed_id, quantity, schedule_date) => {
         const query = 'insert into "feedingschedules" (cow, feed_id, quantity, schedule_date) values ($1, $2, $3, $4)';
         const values = [cow, feed_id, quantity, schedule_date];
         await pool.query(query, values);
-        console.log('Feeding schedule added successfully');
     } catch (error) {
         console.error('Error adding feeding schedule', error.message );
         throw error;
@@ -93,7 +90,6 @@ const deletefeed = async (feedId) => {
         const query = 'DELETE FROM Feeds WHERE id = $1';
         const values = [feedId];
         await pool.query(query, values);
-        console.log('Feed record deleted successfully');
     } catch (error) {   
         console.error('Error deleting feed:', error.message);
         throw error;

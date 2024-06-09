@@ -31,7 +31,6 @@ const findCowById = async (cowId) => {
 
 const updateCowHealth = async (date, healthissue, treatmentgiven, cowId) => {
   try {
-    console.log('Executing updateCowHealth with:', { date, healthissue, treatmentgiven, cowId }); // Add this line for debugging
     const query = 'UPDATE HealthRecords SET date = $1, healthissue = $2, treatmentgiven = $3 WHERE cow = $4';
     const values = [date, healthissue, treatmentgiven, cowId];
     await pool.query(query, values);
@@ -43,7 +42,6 @@ const updateCowHealth = async (date, healthissue, treatmentgiven, cowId) => {
 
 const createCowHealth = async (date, healthissue, treatmentgiven, cowId) => {
   try {
-    console.log('Executing createCowHealth with:', { date, healthissue, treatmentgiven, cowId }); // Add this line for debugging
     const query = 'INSERT INTO HealthRecords (date, healthissue, treatmentgiven, cow) VALUES ($1, $2, $3, $4)';
     const values = [date, healthissue, treatmentgiven, cowId];
     await pool.query(query, values);

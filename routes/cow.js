@@ -4,10 +4,6 @@ const CowController = require('../controllers/CowController');
 const authenticateToken = require('../middleware/authenticateToken');
 const rbacMiddleware = require('../middleware/rbacMiddleware');
 
-console.log('CowController:', CowController);
-console.log('authenticateToken:', authenticateToken);
-console.log('rbacMiddleware:', rbacMiddleware);
-
 router.post('/addCow', authenticateToken, rbacMiddleware.checkPermission('add_records'), (req, res) => {
 CowController.addCow(req, res);
 });

@@ -28,7 +28,6 @@ const addtask = async (req, res) => {
 const updatetask = async (req, res) => {
     const {title, description, priority, due_date, category, status, assigned_to  } = req.body;
     const taskId = req.params.taskId;
-    console.log("TaskId", taskId);
     try {
         const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
         if (!token) {

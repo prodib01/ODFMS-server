@@ -69,7 +69,6 @@ const getStaffAddeByUser = async (loggedInUserId) => {
     };
 
     const result = await pool.query(query);
-    console.log('Result:', result.rows); // Log the result of the query
 
     return result.rows;
   } catch (error) {

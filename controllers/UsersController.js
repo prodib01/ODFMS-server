@@ -48,7 +48,7 @@ const login = async (req, res) => {
     const tokenPayload = {
       userId: user.id,
       role: user.position,
-    };
+      name: user.full_name,    };
     const token = jwt.sign(tokenPayload, "Antonia", { expiresIn: "24h" });
 
     res.status(200).json({
@@ -112,7 +112,6 @@ const sendEmail = async (to, subject, text) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully');
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;

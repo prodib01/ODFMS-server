@@ -76,7 +76,7 @@ const updateevent = async (req, res) => {
 };
 
 const deleteevent = async (req, res) => {
-    const eventId = req.params.id;
+    const eventId = req.params.eventId;
     try {
         const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
         if (!token) {

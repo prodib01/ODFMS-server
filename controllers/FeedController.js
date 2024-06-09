@@ -136,8 +136,6 @@ const getFeedingScheduleById = async (req, res) => {
 const updatefeed = async (req, res) => {
     const { name, cost_per_unit, unit } = req.body;
     const feedId = req.params.feedId;
-    console.log(`Received PATCH request at /feed/${feedId}`);
-    console.log(`Updating feed with ID: ${feedId}, Data:`, { name, cost_per_unit, unit });
     try {
         await FeedModel.updatefeed(name, cost_per_unit, unit, feedId);
         res.status(200).json({
@@ -155,7 +153,6 @@ const updatefeed = async (req, res) => {
 
 const deletefeed = async (req, res) => {
     const feedId = req.params.feedId;
-console.log('Attempting to delete feed record with ID: ${feedId}');
 try {
     const feed = await FeedModel.getFeedById(feedId);
     if (!feed) {
