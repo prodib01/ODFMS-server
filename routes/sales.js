@@ -8,4 +8,12 @@ router.post('/addsales', authenticateToken, rbacMiddleware.checkPermission('add_
     SalesController.addsales(req, res);
 });
 
+router.get('/getsales', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    SalesController.getsales(req, res);
+});
+
+router.get('/getsalesbymonthyear', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    SalesController.getsalesByMonthYear(req, res);
+});
+
 module.exports = router;

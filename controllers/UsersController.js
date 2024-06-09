@@ -48,7 +48,8 @@ const login = async (req, res) => {
     const tokenPayload = {
       userId: user.id,
       role: user.position,
-      name: user.full_name,    };
+      full_name: user.full_name 
+    };
     const token = jwt.sign(tokenPayload, "Antonia", { expiresIn: "24h" });
 
     res.status(200).json({
@@ -65,6 +66,7 @@ const login = async (req, res) => {
       });
   }
 };
+
 
 
 
