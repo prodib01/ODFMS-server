@@ -16,4 +16,8 @@ router.get('/getsalesbymonthyear', authenticateToken, rbacMiddleware.checkPermis
     SalesController.getsalesByMonthYear(req, res);
 });
 
+router.get('/getsalesbyyear', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    SalesController.getsalesbyyear(req, res);
+});
+
 module.exports = router;

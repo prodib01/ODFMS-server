@@ -17,4 +17,8 @@ router.post('/createCowHealth/', authenticateToken, rbacMiddleware.checkPermissi
     HealthController.createCowHealth(req, res);
 });
 
+router.get('/gethealthrecords', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    HealthController.gethealthrecords(req, res);
+});
+
 module.exports = router;

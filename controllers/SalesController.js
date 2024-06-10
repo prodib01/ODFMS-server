@@ -26,7 +26,6 @@ const getsales = async (req, res) => {
     }
 };
 
-// Controller to get sales by month and year
 const getsalesByMonthYear = async (req, res) => {
     const { month, year } = req.query;
     try {
@@ -41,8 +40,24 @@ const getsalesByMonthYear = async (req, res) => {
     }
 };
 
+const getsalesbyyear = async (req, res) => {
+    const { year } = req.query;
+    try {
+        const sales = await salesModel.getsalesbyyear(year);
+        return res.status(200).json({
+            msg: 'Yearly sales retrieved successfully',
+            data: sales
+        });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).send('Server Error');
+    }
+};
+
+
 module.exports = {
     addsales,
     getsales,
-    getsalesByMonthYear
+    getsalesByMonthYear,
+    getsalesbyyear
 };

@@ -72,9 +72,9 @@ const login = async (req, res) => {
 
 const getStaffAddedByUser = async (req, res) => {
   try {
-    const loggedInUserId = req.user.userId; // Assuming you have middleware to extract user details from the token
+    const loggedInUserId = req.user.userId; 
 
-    const staff = await userModel.getStaffAddedByUser(loggedInUserId); // Use the getStaff function from the userModel
+    const staff = await userModel.getStaffAddedByUser(loggedInUserId); 
 
     res.status(200).json({
       status: "success",

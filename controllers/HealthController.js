@@ -31,6 +31,30 @@ const getHealthRecordsByCowId = async (req, res) => {
     }
 };
 
+const getHealthRecords = async (req, res) => {
+    try {
+        const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+        if (!token) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Unauthorized'
+            });
+        }
+        const healthRecords = await HealthModel.getHealthRecords();
+        return res.status(200).json({
+            status:'success',
+            message: 'Health records fetched successfully',
+            records: healthRecords
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Internal server error'
+        });
+    }
+};
+
 const updateCowHealth = async (req, res) => {
   const { date, healthissue, treatmentgiven } = req.body;
   const cowId = req.params.cowId;
@@ -63,6 +87,6 @@ const createCowHealth = async (req, res) => {
 module.exports = {
     getHealthRecordsByCowId,
     updateCowHealth,
-createCowHealth
-
+createCowHealth,
+getHealthRecords
 };

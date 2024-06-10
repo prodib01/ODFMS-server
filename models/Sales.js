@@ -8,7 +8,7 @@ const pool = new Pool({
   port: 5432
 });
 
-// Function to add a sale
+
 const addsales = async ({ product, date, amount, quantity, buyer }) => {
     try {
         const query = `
@@ -23,7 +23,7 @@ const addsales = async ({ product, date, amount, quantity, buyer }) => {
     }
 };
 
-// Function to get all sales
+
 const getsales = async () => {
     try {
         const query = `
@@ -39,7 +39,7 @@ const getsales = async () => {
     }
 };
 
-// Function to get sales by month and year
+
 const getsalesByMonthYear = async (month, year) => {
     try {
         const query = `
@@ -59,8 +59,31 @@ const getsalesByMonthYear = async (month, year) => {
     }
 };
 
+const getsalesbyyear = async (year) => {
+    try {
+        const query = `
+        SELECT
+            TRIM(TO_CHAR(s.saledate, 'Month')) AS month,  -- Remove trailing spaces
+            SUM(s.saleamount) AS totalsales
+        FROM sales s
+        WHERE EXTRACT(YEAR FROM s.saledate) = $1
+        GROUP BY TRIM(TO_CHAR(s.saledate, 'Month')), EXTRACT(MONTH FROM s.saledate)
+        ORDER BY EXTRACT(MONTH FROM s.saledate);
+        `;
+        const values = [year];
+        const result = await pool.query(query, values);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching sales by year:', error.message);
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     addsales,
     getsales,
-    getsalesByMonthYear
-};
+    getsalesByMonthYear,
+    getsalesbyyear
+}

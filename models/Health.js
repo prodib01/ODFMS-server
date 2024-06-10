@@ -51,11 +51,20 @@ const createCowHealth = async (date, healthissue, treatmentgiven, cowId) => {
   }
 };
 
-
+const getHealthRecords = async () => {
+  try {
+    const result = await pool.query('SELECT * FROM HealthRecords');
+    return result.rows;
+  } catch (error) {
+    console.error('Error getting health records:', error);
+    throw error;
+  }
+};
 
 module.exports = {
   getHealthRecordsByCowId,
   findCowById,
   updateCowHealth,
-  createCowHealth, // Make sure this is exported
+  createCowHealth, 
+  getHealthRecords,
 };
