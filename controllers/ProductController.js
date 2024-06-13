@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const addproduct = async (req, res) => {
     try {
-        const { name } = req.body;
+        const { product_name } = req.body;
         const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
         if (!token) {
             return res.status(401).json({
@@ -37,13 +37,19 @@ const addproduct = async (req, res) => {
             });
         }
 
-        const farmInitials = farmName.substring(0, 2).toUpperCase();
-        const productInitial = name.substring(0, 1).toUpperCase();
-        const randomNumber = Math.floor(100 + Math.random() * 900); // Generate a random 3-digit number
+        // Generate a random 3-digit number
+        const randomNumber = Math.floor(100 + Math.random() * 900); 
 
-        const code = `${farmInitials}${randomNumber}${productInitial}`;
+        // Extract the first two letters of the farm name
+        const farmInitials = farmName.substring(0, 2).toUpperCase(); 
 
-        await ProductModel.addproduct(name, code);
+        // Extract the first two letters of the product name
+        const productInitials = product_name.substring(0, 2).toUpperCase();
+
+        // Concatenate the farm initials, random number, and product initials
+        const code = `${farmInitials}${randomNumber}${productInitials}`;
+
+        await ProductModel.addproduct(product_name, code);
         return res.status(200).json({
             message: 'Product added successfully',
             code: code // Optionally return the generated code
@@ -54,6 +60,7 @@ const addproduct = async (req, res) => {
         });
     }
 };
+
 
 //endpoint to fetch products
 const getproducts = async (req, res) => {

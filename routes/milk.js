@@ -8,4 +8,12 @@ router.post('/addmilk', authenticateToken, rbacMiddleware.checkPermission('add_r
     MilkController.addmilk(req, res);
 });
 
+router.get('/getmilkproduction', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    MilkController.getMilkProductionByDate(req, res);
+});
+
+router.get('/getweeklymilk/:year/:month',  (req, res) => {
+    MilkController.getTotalMilkByMonth(req, res);
+});
+
 module.exports = router;

@@ -20,4 +20,8 @@ router.get('/getsalesbyyear', authenticateToken, rbacMiddleware.checkPermission(
     SalesController.getsalesbyyear(req, res);
 });
 
+router.get('/getweeklysales/:year/:month', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    SalesController.getTotalSalesByMonth(req, res);
+});
+
 module.exports = router;

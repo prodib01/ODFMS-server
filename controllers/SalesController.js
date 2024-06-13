@@ -12,10 +12,11 @@ const addsales = async (req, res) => {
     }
 };
 
-// Controller to get all sales
+
 const getsales = async (req, res) => {
     try {
-        const sales = await salesModel.getsales();
+        const today = new Date().toISOString().split('T')[0]; // get current date in YYYY-MM-DD format
+        const sales = await salesModel.getsalesForDate(today);
         return res.status(200).json({
             msg: 'Sales retrieved successfully',
             sales
@@ -25,6 +26,23 @@ const getsales = async (req, res) => {
         return res.status(500).send('Server Error');
     }
 };
+
+const getTotalSalesByMonth = async (req, res) => {
+  const { year, month } = req.params;
+  
+  if (!year || !month) {
+    return res.status(400).json({ error: 'Year and month are required' });
+  }
+  
+  try {
+    const salesData = await salesModel.getTotalSalesByWeek(year, month);
+    res.json(salesData);
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 const getsalesByMonthYear = async (req, res) => {
     const { month, year } = req.query;
@@ -59,5 +77,6 @@ module.exports = {
     addsales,
     getsales,
     getsalesByMonthYear,
-    getsalesbyyear
+    getsalesbyyear,
+    getTotalSalesByMonth
 };

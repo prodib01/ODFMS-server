@@ -24,20 +24,22 @@ const addsales = async ({ product, date, amount, quantity, buyer }) => {
 };
 
 
-const getsales = async () => {
+const getsalesForDate = async (date) => {
     try {
         const query = `
             SELECT s.id, s.product, p.product_name, s.saledate, s.saleamount, s.quantity, s.buyername
             FROM sales s
-            JOIN product p ON s.product = p.id;
+            JOIN product p ON s.product = p.id
+            WHERE s.saledate = $1;
         `;
-        const result = await pool.query(query);
+        const result = await pool.query(query, [date]);
         return result.rows;
     } catch (error) {
         console.error('Error fetching sales:', error.message);
         throw error;
     }
 };
+
 
 
 const getsalesByMonthYear = async (month, year) => {
@@ -79,11 +81,35 @@ const getsalesbyyear = async (year) => {
     }
 };
 
+const getTotalSalesByWeek = async (year, month) => {
+  const query = `
+    SELECT 
+      EXTRACT(WEEK FROM saledate) - EXTRACT(WEEK FROM DATE_TRUNC('month', saledate)) + 1 AS week_of_month,
+      SUM(saleamount) AS total_sales
+    FROM sales
+    WHERE EXTRACT(YEAR FROM saledate) = $1 AND EXTRACT(MONTH FROM saledate) = $2
+    GROUP BY week_of_month
+    ORDER BY week_of_month;
+  `;
+  
+  const values = [year, month];
+  
+  try {
+    const result = await pool.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error('Error executing query:', error);
+    throw error; // Propagate the error back to the controller for proper handling
+  }
+};
+
+
 
 
 module.exports = {
     addsales,
-    getsales,
+    getsalesForDate,
     getsalesByMonthYear,
-    getsalesbyyear
+    getsalesbyyear,
+    getTotalSalesByWeek
 }
