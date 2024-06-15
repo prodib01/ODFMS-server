@@ -8,8 +8,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-
-
 const addfeed = async (name, cost_per_unit, unit) => {
     try {
         const query = 'INSERT INTO Feeds (name, cost_per_unit, unit) VALUES ($1, $2, $3)';
@@ -21,46 +19,55 @@ const addfeed = async (name, cost_per_unit, unit) => {
     }
 };
 
+const addfeedinventory = async (feed_id, quantity, total_cost) => {
+const result = await pool.query(
+    `INSERT INTO feedinventory (feed_id, quantity, total_cost) VALUES ($1, $2, $3) RETURNING *`,
+    [feed_id, quantity, total_cost]
+);
+    return result.rows[0];
+};
 
-const addfeedinventory = async (feed_id, quantity) => {
-    try{
-        const query = 'insert into "feedinventory" (feed_id, quantity) values ($1, $2)';
-        const values = [feed_id, quantity];
-        await pool.query(query, values);
+const addfeedingschedule = async (cow, feed_id, quantity, schedule_date, total_cost) => {
+    const result = await pool.query(
+        `INSERT INTO feedingschedules (cow, feed_id, quantity, schedule_date, total_cost) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        [cow, feed_id, quantity, schedule_date, total_cost]
+    );
+    return result.rows[0];
+};
+
+// Updated: get a feeding schedule by its ID
+const getFeedingscheduleById = async (id) => {
+    try {
+        const result = await pool.query('SELECT * FROM feedingschedules WHERE id = $1', [id]);
+        return result.rows[0];
     } catch (error) {
-        console.error('Error adding feed inventory', error.message );
+        console.error('Error fetching feeding schedule by ID:', error.message);
         throw error;
     }
 };
 
-const addfeedingschedules = async (cow, feed_id, quantity, schedule_date) => {
-    try{
-        const query = 'insert into "feedingschedules" (cow, feed_id, quantity, schedule_date) values ($1, $2, $3, $4)';
-        const values = [cow, feed_id, quantity, schedule_date];
-        await pool.query(query, values);
+const getFeedingSchedules = async () => {
+    try {
+        const result = await pool.query('SELECT * FROM feedingschedules');
+        return result.rows;
     } catch (error) {
-        console.error('Error adding feeding schedule', error.message );
+        console.error('Error fetching feeding schedules:', error.message);
         throw error;
     }
-};
 
-const getFeedingScheduleById = async () => {
-    const result = await pool.query('SELECT * FROM feedingschedules');
-    return result.rows; // Returning all rows instead of just the first one
 };
-
 
 const getFeedById = async (id) => {
-  const result = await pool.query('SELECT * FROM Feeds WHERE id = $1', [id]);
-  return result.rows[0];
+    const result = await pool.query('SELECT * FROM Feeds WHERE id = $1', [id]);
+    return result.rows[0];
 };
 
 const insertFeedingCost = async (feeding_schedule_id, total_cost) => {
-  const result = await pool.query(
-    'INSERT INTO feedingcosts (feeding_schedule_id, total_cost) VALUES ($1, $2) RETURNING *',
-    [feeding_schedule_id, total_cost]
-  );
-  return result.rows[0];
+    const result = await pool.query(
+        'INSERT INTO feedingcosts (feeding_schedule_id, total_cost) VALUES ($1, $2) RETURNING *',
+        [feeding_schedule_id, total_cost]
+    );
+    return result.rows[0];
 };
 
 const getFeeds = async () => {
@@ -74,24 +81,26 @@ const getFeeds = async () => {
     }
 };
 
-const updatefeed = async (name, cost_per_unit, unit, id) => {
+const updateFeedingschedule = async (schedule_id, cow, feed_id, quantity, schedule_date, total_cost) => {
     try {
-        const query = 'UPDATE Feeds SET name = $1, cost_per_unit = $2, unit = $3 WHERE id = $4';
-        const values = [name, cost_per_unit, unit, id];
-        await pool.query(query, values);
+        const query = 'UPDATE feedingschedules SET cow = $1, feed_id = $2, quantity = $3, schedule_date = $4, total_cost = $5 WHERE id = $6 RETURNING *';
+        const values = [cow, feed_id, quantity, schedule_date, total_cost, schedule_id];
+        const result = await pool.query(query, values);
+        return result.rows[0];
     } catch (error) {
-        console.error('Error updating feed:', error.message);
+        console.error('Error updating feeding schedule:', error.message);
         throw error;
     }
 };
 
-const deletefeed = async (feedId) => {
+const deleteFeedingschedule = async (id) => {
     try {
-        const query = 'DELETE FROM Feeds WHERE id = $1';
-        const values = [feedId];
-        await pool.query(query, values);
-    } catch (error) {   
-        console.error('Error deleting feed:', error.message);
+        const query = 'DELETE FROM feedingschedules WHERE id = $1 RETURNING *';
+        const values = [id];
+        const result = await pool.query(query, values);
+        return result.rows[0]; // Ensure to handle result correctly if needed
+    } catch (error) {
+        console.error('Error deleting feeding schedule:', error.message);
         throw error;
     }
 };
@@ -100,11 +109,12 @@ const deletefeed = async (feedId) => {
 module.exports = {
     addfeed,
     addfeedinventory,
-    addfeedingschedules,
-    getFeedingScheduleById,
+    addfeedingschedule,
+    getFeedingscheduleById, // Renamed for consistency
     getFeedById,
     insertFeedingCost,
     getFeeds,
-    updatefeed,
-    deletefeed
+    updateFeedingschedule,
+    deleteFeedingschedule,
+    getFeedingSchedules,
 };

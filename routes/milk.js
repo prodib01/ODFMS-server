@@ -12,8 +12,9 @@ router.get('/getmilkproduction', authenticateToken, rbacMiddleware.checkPermissi
     MilkController.getMilkProductionByDate(req, res);
 });
 
-router.get('/getweeklymilk/:year/:month',  (req, res) => {
+router.get('/getweeklymilk/:year/:month', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
     MilkController.getTotalMilkByMonth(req, res);
 });
+
 
 module.exports = router;

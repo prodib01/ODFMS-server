@@ -16,7 +16,7 @@ router.post('/addfeedingschedules', authenticateToken, rbacMiddleware.checkPermi
     FeedController.addfeedingschedules(req, res);
 });
 
-router.get('/getFeedingScheduleById', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+router.get('/getFeedingScheduleById/:id', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
     FeedController.getFeedingScheduleById(req, res);
 });
 
@@ -30,12 +30,16 @@ router.get('/getfeeds', authenticateToken, rbacMiddleware.checkPermission('view_
     FeedController.getfeeds(req, res);
 });
 
-router.patch('/updatefeed/:feedId', authenticateToken, rbacMiddleware.checkPermission('update_records'), (req, res) => {
+router.patch('/updatefeedingschedules/:feedId', authenticateToken, rbacMiddleware.checkPermission('update_records'), (req, res) => {
     FeedController.updatefeed(req, res);
 });
 
-router.delete('/deletefeed/:feedId', authenticateToken, rbacMiddleware.checkPermission('delete_records'), (req, res) => {   
+router.delete('/deletefeedingschedules/:feedId', authenticateToken, rbacMiddleware.checkPermission('delete_records'), (req, res) => {   
     FeedController.deletefeed(req, res);
+});
+
+router.get('/getschedules', authenticateToken, rbacMiddleware.checkPermission('view_records'), (req, res) => {
+    FeedController.getschedules(req, res);
 });
 
 module.exports = router;
