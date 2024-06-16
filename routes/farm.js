@@ -9,6 +9,6 @@ router.post('/addFarm', farmController.addFarm);
 router.get('/myFarmDetails', farmController.getMyFarmDetails);
 
 // Endpoint to serve images
-router.get('/images/:filename', farmController.serveImage);
+router.get('/images/', farmController.serveImage);
 
 module.exports = router;

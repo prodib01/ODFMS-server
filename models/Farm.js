@@ -25,13 +25,37 @@ const getFarmDetailsByOwner = async (farm_owner) => {
     const values = [farm_owner];
     const result = await pool.query(query, values);
     return result.rows[0]; // Returns undefined if no farm found
-  }catch (error) {
+  } catch (error) {
     console.error("Error finding farm by owner:", error);
+    throw error;
+  }
+};
+
+const updateFarmDetails = async (farm_owner, farm_name, location) => {
+  try {
+    const query = 'UPDATE "farm" SET farm_name = $1, location = $2 WHERE farm_owner = $3';
+    const values = [farm_name, location, farm_owner];
+    await pool.query(query, values);
+  } catch (error) {
+    console.error("Error updating farm details:", error);
+    throw error;
+  }
+};
+
+const updateFarmLogo = async (farm_owner, logo) => {
+  try {
+    const query = 'UPDATE "farm" SET logo = $1 WHERE farm_owner = $2';
+    const values = [logo, farm_owner];
+    await pool.query(query, values);
+  } catch (error) {
+    console.error("Error updating farm logo:", error);
     throw error;
   }
 };
 
 module.exports = {
   addFarm,
-  getFarmDetailsByOwner
+  getFarmDetailsByOwner,
+  updateFarmDetails,
+  updateFarmLogo
 };
